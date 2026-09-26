@@ -15,6 +15,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Unzip project
+        run: unzip -o WinTranslateArm.zip -d .
+
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -38,11 +41,12 @@ jobs:
           gradle-version: '8.7'
 
       - name: Build debug APK
+        working-directory: WinTranslateArm
         run: gradle assembleDebug --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: WinTranslateArm-debug-apk
-          path: app/build/outputs/apk/debug/*.apk
+          path: WinTranslateArm/app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
